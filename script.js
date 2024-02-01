@@ -1,9 +1,8 @@
 var data;
 var runCommands;
 var baseImages = [
-  'ubuntu22.4:latest',
-  'debian11:latest',
-  'centos8:latest',
+  'mightywomble/dockerforgebase_ubuntu:latest',
+  'mightywomble/dockerforgebase_fedora:latest',
 ];
 var appContainer = document.getElementById('app-container'); // Declare appContainer outside of the fetch block
 
