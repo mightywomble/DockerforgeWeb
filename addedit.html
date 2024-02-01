@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DevOps Data</title>
+    <style>
+      /* Add some basic styling */
+      table {
+        border-collapse: collapse;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>Application</th>
+          <th>Version</th>
+          <th>Run</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data rows will be dynamically added here -->
+      </tbody>
+      <tfoot>
+        <tr>
+          <td><input type="text" id="application-input"></td>
+          <td><input type="text" id="version-input"></td>
+          <td><input type="text" id="run-input"></td>
+          <td><button onclick="addRow()">Add</button></td>
+        </tr>
+      </tfoot>
+    </table>
+    <script src="script_addedit.js"></script>
+  </body>
+</html>

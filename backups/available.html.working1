@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application Versions</title>
+    <style>
+        .app-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="script.js"></script>
+</head>
+<body>
+    <div id="app-container"></div>
+<div id="config-output"></div>
+
+</body>
+</html>
+
+

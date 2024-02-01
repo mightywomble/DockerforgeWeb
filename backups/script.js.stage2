@@ -1,0 +1,110 @@
+var data; // Declare a variable to store the fetched application data
+var runCommands; // Declare a variable to store the run commands
+
+function showRunCommand(selectElement) {
+    var selectedVersion = selectElement.value;
+    var runCommandElement = selectElement.nextElementSibling;
+    var runCommand = runCommands[selectedVersion];
+    runCommandElement.textContent = runCommand;
+}
+
+function generateConfig() {
+    var selectedApps = [];
+
+    // Retrieve selected applications, versions, and run commands
+    data.forEach(function(application, index) {
+        var checkbox = document.getElementById('checkbox-' + index);
+        if (checkbox.checked) {
+            var selectedApp = {
+                application: application.application,
+                version: document.getElementById('version-select-' + index).value,
+                run: runCommands[document.getElementById('version-select-' + index).value]
+            };
+            selectedApps.push(selectedApp);
+        }
+    });
+
+    // Generate JSON object
+    var config = {
+        selectedApplications: selectedApps
+    };
+
+    // Output the generated JSON object as code
+    var outputElement = document.getElementById('config-output');
+    outputElement.textContent = JSON.stringify(config, null, 2);
+}
+
+// Fetch application data from the server
+fetch('data.php')
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(fetchedData) {
+        data = fetchedData; // Assign the fetched data to the 'data' variable
+
+        var appContainer = document.getElementById('app-container');
+
+        data.forEach(function(application, index) {
+            var appBox = document.createElement('div');
+            appBox.classList.add('app-box');
+
+            // Add checkbox input element
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'checkbox-' + index;
+            appBox.appendChild(checkbox);
+
+            var heading = document.createElement('h3');
+            heading.textContent = application.application;
+            appBox.appendChild(heading);
+
+            var versionSelect = document.createElement('select');
+            versionSelect.id = 'version-select-' + index; // Update the id attribute
+            versionSelect.addEventListener('change', function() {
+                showRunCommand(this); // Pass the select element as a parameter
+            });
+
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Select Version';
+            versionSelect.appendChild(defaultOption);
+
+            application.versions.forEach(function(version) {
+                var option = document.createElement('option');
+                option.value = version.version;
+                option.textContent = version.version;
+                versionSelect.appendChild(option);
+            });
+
+            appBox.appendChild(versionSelect);
+
+            var runCommandElement = document.createElement('p');
+            runCommandElement.id = 'run-command-' + index; // Update the id attribute
+            appBox.appendChild(runCommandElement);
+
+            appContainer.appendChild(appBox);
+        });
+
+        // Store run commands in the global 'runCommands' variable
+        runCommands = data.reduce(function(acc, application) {
+            application.versions.forEach(function(version) {
+                acc[version.version] = version.run;
+            });
+            return acc;
+        }, {});
+
+        // Add "Generate Config" button
+        var generateButton = document.createElement('button');
+        generateButton.textContent = 'Generate Config';
+        generateButton.addEventListener('click', generateConfig);
+        appContainer.appendChild(generateButton);
+
+        // Add output element
+        var outputElement = document.createElement('pre');
+        outputElement.id = 'config-output';
+        appContainer.appendChild(outputElement);
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
