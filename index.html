@@ -63,17 +63,40 @@
 
   <div class="content">
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec sapien ut nunc aliquam consequat. Nulla facilisi.
-      Curabitur cursus elementum tortor, in cursus justo tempor eget. Proin vulputate rutrum lorem, id hendrerit ligula tempus
-      in. Donec id urna vitae ex placerat tristique. Aenean sit amet tincidunt purus. Suspendisse potenti. Nullam et velit at
-      nunc bibendum egestas vitae in felis. Mauris in mauris eget nisl convallis faucibus. Donec congue lacinia iaculis.
+      <H2>Description</H2>
+      This project is degined to create a dockerfile from a self built base image which the user can select the 
+      tools they would need to use to work on a given project.
+
+      Once Development has a release, the docker file can be included with the release code so if neded the developer
+      can ensure they are testing using the same development environment the code was produced in
     </p>
     <p>
-      Suspendisse potenti. Ut a semper erat, id gravida nunc. Sed eget elementum justo. Cras auctor massa nec justo porta
-      ultrices. Integer a augue eget lorem consectetur tincidunt. Donec ipsum erat, aliquet quis pellentesque id, iaculis in
-      dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed vulputate nulla
-      felis, vitae auctor dolor gravida vel. Aliquam ornare, nulla eu lobortis semper, lacus dolor tempus est, ut efficitur
-      lectus lectus at ante. Mauris aliquam est sed nunc scelerisque, et sagittis arcu vulputate. Nulla non lobortis lectus.
+      <h2>Status</> 
+      Alpha
+	<br>
+      <h2>Repos</h2>
+	<li><b>DockerForgeBase</b> - Push adockerfile into the main branch to use github actions to build a new base docker image to Dockerhub with the version and latest tags
+	<br>
+	<a href="https://github.com/mightywomble/DockerforgeBase" target="_blank" rel="external">https://github.com/mightywomble/DockerforgeBase</a>
+	<li><b>DockerForgeWeb</b> - Code to deploy the Dockerforge server for creating the Dockerfiles
+	<br>
+	<a href="https://github.com/mightywomble/DockerforgeWeb" target="_blank" rel="external">https://github.com/mightywomble/DockerforgeWeb</a>
+	<li><b>DockerForgeServerbuild</b> - Ansible to install the applications needed for DockerforgeWeb onto Ubuntu (Tested:22.04)
+	<br>
+	<a href="https://github.com/mightywomble/DockerforgeServerbuild" target="_blank" rel="external">https://github.com/mightywomble/DockerforgeServerbuild</a>
+	<br>
+	<li><b>Docker Hub</b> - Base Image
+	<br>
+	<a href="https://hub.docker.com/repository/docker/mightywomble/dockerforgebase_ubuntu/general" target="_blank" rel="external">https://hub.docker.com/repository/docker/mightywomble/dockerforgebase_ubuntu/general</a>
+	<br>
+	<br>
+        <h2>Todo</h2>
+	<li><b>Trello Board</b>
+	<a href="https://trello.com/b/SmfIPdUL/dockerforge" target="_blank" rel="external">https://trello.com/b/SmfIPdUL/dockerforge</a>
+	<br>
+
+
+
     </p>
   </div>
 </body>

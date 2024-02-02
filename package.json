@@ -1,0 +1,25 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "description": "**Self Server Docker Creation**  the idea of this project is to prove a web interface with a lot of   applications to build into a docker image by dynamically creating applications  dockerfile based on slecting applications and specific versions.",
+  "main": "datawork_script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mightywomble/DockerforgeWeb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mightywomble/DockerforgeWeb/issues"
+  },
+  "homepage": "https://github.com/mightywomble/DockerforgeWeb#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}

@@ -1,6 +1,9 @@
 <?php
 
-include 'db-connection.php';
+$host = 'localhost';
+$dbname = 'devopsdev';
+$username = 'root';
+$password = 'Qw3rty123?';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
