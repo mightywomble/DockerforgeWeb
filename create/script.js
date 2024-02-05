@@ -4,7 +4,8 @@ var baseImages = [
   'mightywomble/dockerforgebase_ubuntu:latest',
   'mightywomble/dockerforgebase_fedora:latest',
 ];
-var appContainer = document.getElementById('app-container'); // Declare appContainer outside of the fetch block
+
+var appContainer = document.getElementById('app-container');
 
 function showRunCommand(selectElement) {
   var index = selectElement.id.split('-')[2];
@@ -50,6 +51,12 @@ function generateConfig() {
 
   var configOutput = document.getElementById('config-output');
   configOutput.innerHTML = ''; // Clear previous content
+
+  // Display the Dockerfile content
+  var dockerfileContentElement = document.createElement('pre');
+  dockerfileContentElement.textContent = dockerfileContent;
+
+  configOutput.appendChild(dockerfileContentElement);
   configOutput.appendChild(downloadLink);
 }
 
@@ -127,6 +134,5 @@ fetch('data.php')
     appContainer.appendChild(generateButton);
   })
   .catch(function (error) {
-    console.log('Error fetching application data:', error);
+    console.log('Error:', error);
   });
-

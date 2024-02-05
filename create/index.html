@@ -66,6 +66,9 @@
       flex: 1;
     }
 
+    .wizard-step {
+      display: none;
+    }
   </style>
 </head>
 
@@ -81,11 +84,43 @@
     <a class="button" href="index.html">Home</a>
     <a class="button" href="search.html">Search (WiP)</a>
   </div>
-    <div id="app-container"></div>
-<pre id="config-output"></pre>
-    <script src="script.js"></script>
-</p>
-</div>
-  </body>
-</html>
 
+  <form id="wizard-form">
+    <div class="wizard-step" id="step-1">
+      <div id="app-container"></div>
+      <button type="button" class="next-button">Next</button>
+    </div>
+
+    <div class="wizard-step" id="step-2">
+      <h2>EXPOSE Options</h2>
+      <div id="expose-container">
+        <div class="expose-row">
+          <input type="number" class="expose-input" placeholder="Port" min="1">
+          <button type="button" class="add-expose-button">Add</button>
+        </div>
+      </div>
+      <button type="button" class="back-button">Back</button>
+      <button type="button" class="next-button">Next</button>
+    </div>
+
+    <div class="wizard-step" id="step-3">
+      <h2>User and Workdir</h2>
+      <div>
+        <label for="user-input">USER:</label>
+        <input type="text" id="user-input">
+      </div>
+      <div>
+        <label for="workdir-input">WORKDIR:</label>
+        <input type="text" id="workdir-input">
+      </div>
+      <button type="button" class="back-button">Back</button>
+      <button type="submit">Generate Dockerfile</button>
+    </div>
+  </form>
+
+  <div id="config-output"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
