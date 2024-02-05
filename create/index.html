@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>DockerfileForge</title>
   <style>
@@ -21,32 +20,48 @@
       font-size: 24px;
     }
 
-    .button-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .button {
-      margin: 0 10px;
-      padding: 10px 20px;
+    .menu {
       background-color: #333;
       color: #fff;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
+      padding: 10px 20px;
     }
 
-    .button:hover {
-      background-color: #555;
+    .menu a {
+      margin-right: 10px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .menu a:hover {
+      text-decoration: underline;
     }
 
     .content {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .column {
+      flex: 1;
       padding: 20px;
     }
 
-    /* Added CSS for rows */
+    #column1 {
+      width: 15%;
+    }
+
+    #column2 {
+      width: 15%;
+    }
+
+    #column3 {
+      flex: 2;
+    }
+
+    #column4 {
+      width: 15%;
+    }
+
     .app-row {
       display: flex;
       align-items: center;
@@ -66,61 +81,38 @@
       flex: 1;
     }
 
-    .wizard-step {
-      display: none;
+    #config-output {
+      white-space: pre-wrap;
     }
   </style>
 </head>
-
 <body>
   <header>
     <h1>DockerfileForge</h1>
   </header>
 
-  <div class="button-container">
-    <a class="button" href="addedit/index.html">Edit Apps</a>
-    <a class="button" href="create.html">Create Dockerfile</a>
-    <a class="button" href="docker.html">Add App</a>
-    <a class="button" href="index.html">Home</a>
-    <a class="button" href="search.html">Search (WiP)</a>
+  <div class="menu">
+    <a href="addedit/index.html">Edit Apps</a>
+    <a href="create.html">Create Dockerfile</a>
+    <a href="docker.html">Add App</a>
+    <a href="index.html">Home</a>
+    <a href="search.html">Search (WiP)</a>
   </div>
 
-  <form id="wizard-form">
-    <div class="wizard-step" id="step-1">
+  <div class="content">
+    <div class="column" id="column1">
       <div id="app-container"></div>
-      <button type="button" class="next-button">Next</button>
     </div>
 
-    <div class="wizard-step" id="step-2">
-      <h2>EXPOSE Options</h2>
-      <div id="expose-container">
-        <div class="expose-row">
-          <input type="number" class="expose-input" placeholder="Port" min="1">
-          <button type="button" class="add-expose-button">Add</button>
-        </div>
-      </div>
-      <button type="button" class="back-button">Back</button>
-      <button type="button" class="next-button">Next</button>
+    <div class="column" id="column2">
+      <pre id="config-output"></pre>
     </div>
 
-    <div class="wizard-step" id="step-3">
-      <h2>User and Workdir</h2>
-      <div>
-        <label for="user-input">USER:</label>
-        <input type="text" id="user-input">
-      </div>
-      <div>
-        <label for="workdir-input">WORKDIR:</label>
-        <input type="text" id="workdir-input">
-      </div>
-      <button type="button" class="back-button">Back</button>
-      <button type="submit">Generate Dockerfile</button>
-    </div>
-  </form>
+    <div class="column" id="column3"></div>
 
-  <div id="config-output"></div>
+    <div class="column" id="column4"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
-
 </html>

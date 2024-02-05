@@ -4,8 +4,7 @@ var baseImages = [
   'mightywomble/dockerforgebase_ubuntu:latest',
   'mightywomble/dockerforgebase_fedora:latest',
 ];
-
-var appContainer = document.getElementById('app-container');
+var appContainer = document.getElementById('app-container'); // Declare appContainer outside of the fetch block
 
 function showRunCommand(selectElement) {
   var index = selectElement.id.split('-')[2];
@@ -15,6 +14,7 @@ function showRunCommand(selectElement) {
   var configOutput = document.getElementById('config-output');
   configOutput.textContent = `Run command for Application ${index + 1} - Version ${version}: ${runCommand}`;
 }
+
 
 function generateConfig() {
   var selectedVersions = [];
@@ -43,22 +43,27 @@ function generateConfig() {
     dockerfileContent += `RUN ${selectedVersion.runCommand}\n\n`;
   });
 
+  var column3 = document.getElementById('column3');
+  column3.innerHTML = ''; // Clear previous content
+  
+  // Display the Dockerfile content in column 3
+  var dockerfileContentElement = document.createElement('pre');
+  dockerfileContentElement.textContent = dockerfileContent;
+
+  column3.appendChild(dockerfileContentElement);
+
+  var column4 = document.getElementById('column4');
+  column4.innerHTML = ''; // Clear previous content
+
   // Create a download link
   var downloadLink = document.createElement('a');
   downloadLink.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(dockerfileContent);
   downloadLink.download = 'Dockerfile';
   downloadLink.textContent = 'Download Dockerfile';
 
-  var configOutput = document.getElementById('config-output');
-  configOutput.innerHTML = ''; // Clear previous content
-
-  // Display the Dockerfile content
-  var dockerfileContentElement = document.createElement('pre');
-  dockerfileContentElement.textContent = dockerfileContent;
-
-  configOutput.appendChild(dockerfileContentElement);
-  configOutput.appendChild(downloadLink);
+  column4.appendChild(downloadLink);
 }
+
 
 fetch('data.php')
   .then(function (response) {
@@ -134,5 +139,5 @@ fetch('data.php')
     appContainer.appendChild(generateButton);
   })
   .catch(function (error) {
-    console.log('Error:', error);
+    console.log('Error fetching application data:', error);
   });
