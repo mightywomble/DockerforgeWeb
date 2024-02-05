@@ -6,6 +6,59 @@ var baseImages = [
 ];
 var appContainer = document.getElementById('app-container'); // Declare appContainer outside of the fetch block
 
+function showRunCommand(selectElement) {
+  var index = selectElement.id.split('-')[2];
+  var version = selectElement.value;
+  var runCommand = runCommands[version];
+
+  var configOutput = document.getElementById('config-output');
+  configOutput.textContent = `Run command for Application ${index + 1} - Version ${version}: ${runCommand}`;
+}
+
+function generateConfig() {
+  var selectedVersions = [];
+  var checkboxes = document.querySelectorAll('.app-checkbox');
+  checkboxes.forEach(function (checkbox, index) {
+    if (checkbox.checked) {
+      var versionSelect = document.getElementById('version-select-' + index);
+      var version = versionSelect.value;
+      var appName = data[index].application;
+      var runCommand = runCommands[version];
+
+      selectedVersions.push({
+        application: appName,
+        version: version,
+        runCommand: runCommand,
+      });
+    }
+  });
+
+  var baseImageSelect = document.getElementById('base-image-select');
+  var baseImage = baseImageSelect.value;
+
+  var dockerfileContent = `FROM ${baseImage}\n\n`;
+  selectedVersions.forEach(function (selectedVersion) {
+    dockerfileContent += `# ${selectedVersion.application} - Version ${selectedVersion.version}\n`;
+    dockerfileContent += `RUN ${selectedVersion.runCommand}\n\n`;
+  });
+
+  // Create a download link
+  var downloadLink = document.createElement('a');
+  downloadLink.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(dockerfileContent);
+  downloadLink.download = 'Dockerfile';
+  downloadLink.textContent = 'Download Dockerfile';
+
+  var configOutput = document.getElementById('config-output');
+  configOutput.innerHTML = ''; // Clear previous content
+
+  // Display the Dockerfile content
+  var dockerfileContentElement = document.createElement('pre');
+  dockerfileContentElement.textContent = dockerfileContent;
+
+  configOutput.appendChild(dockerfileContentElement);
+  configOutput.appendChild(downloadLink);
+}
+
 fetch('data.php')
   .then(function (response) {
     return response.json();
@@ -26,23 +79,26 @@ fetch('data.php')
     appContainer.appendChild(baseImageSelect);
 
     data.forEach(function (application, index) {
-      var appBox = document.createElement('div');
-      appBox.classList.add('app-box');
+      var appRow = document.createElement('div');
+      appRow.classList.add('app-row');
 
       var checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.id = 'checkbox-' + index;
-      appBox.appendChild(checkbox);
+      checkbox.classList.add('app-checkbox');
+      appRow.appendChild(checkbox);
 
-      var heading = document.createElement('h3');
-      heading.textContent = application.application;
-      appBox.appendChild(heading);
+      var appName = document.createElement('span');
+      appName.textContent = application.application;
+      appName.classList.add('app-name');
+      appRow.appendChild(appName);
 
       var versionSelect = document.createElement('select');
       versionSelect.id = 'version-select-' + index;
       versionSelect.addEventListener('change', function () {
         showRunCommand(this);
       });
+      versionSelect.classList.add('app-dropdown');
 
       var defaultOption = document.createElement('option');
       defaultOption.value = '';
@@ -56,13 +112,9 @@ fetch('data.php')
         versionSelect.appendChild(option);
       });
 
-      appBox.appendChild(versionSelect);
+      appRow.appendChild(versionSelect);
 
-      var runCommandElement = document.createElement('p');
-      runCommandElement.id = 'run-command-' + index;
-      appBox.appendChild(runCommandElement);
-
-      appContainer.appendChild(appBox);
+      appContainer.appendChild(appRow);
     });
 
     runCommands = data.reduce(function (acc, application) {
@@ -84,76 +136,3 @@ fetch('data.php')
     console.log('Error fetching application data:', error);
   });
 
-function showRunCommand(selectElement) {
-  var selectedVersion = selectElement.value;
-  var runCommandElement = selectElement.nextElementSibling;
-  var runCommand = runCommands[selectedVersion];
-  runCommandElement.textContent = runCommand;
-}
-
-var dockerfileContent = '';
-
-function generateConfig() {
-  var selectedApps = [];
-
-  data.forEach(function (application, index) {
-    var checkbox = document.getElementById('checkbox-' + index);
-    if (checkbox.checked) {
-      var selectedApp = {
-        application: application.application,
-        version: document.getElementById('version-select-' + index).value,
-        run: runCommands[document.getElementById('version-select-' + index).value],
-        baseImage: document.getElementById('base-image-select').value,
-      };
-      selectedApps.push(selectedApp);
-    }
-  });
-
-  var config = {
-    selectedApplications: selectedApps,
-  };
-
-  var outputElement = document.getElementById('config-output');
-
-
-  dockerfileContent = generateDockerfile(config); // Store the Dockerfile content
-
-  var dockerfileTextarea = document.createElement('textarea');
-  dockerfileTextarea.textContent = dockerfileContent;
-  dockerfileTextarea.rows = 10;
-  dockerfileTextarea.cols = 80;
-  dockerfileTextarea.style.resize = 'none';
-  appContainer.appendChild(dockerfileTextarea);
-
-  var saveButton = document.createElement('button');
-  saveButton.textContent = 'Save Dockerfile';
-  saveButton.addEventListener('click', function () {
-    saveDockerfile();
-  });
-
-  appContainer.appendChild(saveButton);
-}
-
-function generateDockerfile(config) {
-  var dockerfileContent = '';
-
-  dockerfileContent += `FROM ${config.selectedApplications[0].baseImage}\n\n`;
-
-  config.selectedApplications.forEach(function (app) {
-    dockerfileContent += `# Base image for ${app.application} ${app.version}\n`;
-    dockerfileContent += `#${app.application}:${app.version}\n\n`;
-
-    dockerfileContent += `# Run command\n`;
-    dockerfileContent += `RUN ${app.run}\n\n`;
-  });
-
-  return dockerfileContent;
-}
-
-function saveDockerfile() {
-  var blob = new Blob([dockerfileContent], { type: 'text/plain' });
-  var anchor = document.createElement('a');
-  anchor.download = 'Dockerfile';
-  anchor.href= window.URL.createObjectURL(blob);
-  anchor.click();
-}
